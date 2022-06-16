@@ -65,7 +65,7 @@ class TransaksiKeluarController extends Controller
     }
     public function edit($id){
         $transaksi = TransaksiKeluar::join('barangs','barangs.id','transaksi_keluars.barang_id')
-                    ->select('transaksi_keluars.id','jumlah_keluar','tanggal_keluar','tujuan_keluar','kode_barang')
+                    ->select('transaksi_keluars.id','jumlah_keluar','tanggal_keluar','tujuan_keluar','kode_barang','penanggung_jawab')
                     ->where('transaksi_keluars.id',$id)
                     ->first();
         $barang = Barang::where('kode_barang',$transaksi->kode_barang)->first();

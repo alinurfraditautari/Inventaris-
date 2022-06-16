@@ -58,7 +58,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group col-md-6">
+                        {{-- <div class="form-group col-md-6">
                             <label for="exampleInputEmail1">Jumlah Barang</label>
                             <input type="text" name="jumlah_barang" value="{{ $barang->jumlah_barang }}" class="form-control">
                             <div>
@@ -66,7 +66,7 @@
                                     <small class="form-text text-danger">{{ $errors->first('jumlah_barang') }}</small>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group col-md-6">
                             <label for="exampleInputEmail1">Satuan</label>
                             <select name="satuan" class="form-control" id="bulan">

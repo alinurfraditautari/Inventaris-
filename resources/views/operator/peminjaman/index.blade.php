@@ -46,6 +46,9 @@
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Pinjam</th>
+                                <th>Jumlah Kembali</th>
+                                <th>Jumlah Rusak</th>
+                                <th>Jumlah Hilang</th>
                                 <th>Nama Peminjam</th>
                                 <th>Tanggal Kembali</th>
                                 <th>Keterangan</th>
@@ -62,12 +65,17 @@
                                 <td>{{ $transaksi->tanggal_pinjam }}</td>
                                 <td>{{ $transaksi->kode_barang }}</td>
                                 <td>{{ $transaksi->nama_barang }}</td>
-                                <td>{{ $transaksi->jumlah_pinjam }}</td>
+                                <td>{{ $transaksi->jumlah_pinjam }} {{ $transaksi->satuan }}</td>
+                                <td>{{ $transaksi->kondisi_pengembalian_baik }} {{ $transaksi->satuan }}</td>
+                                <td>{{ $transaksi->kondisi_pengembalian_rusak }} {{ $transaksi->satuan }}</td>
+                                <td>{{ $transaksi->kondisi_pengembalian_hilang }} {{ $transaksi->satuan }}</td>
                                 <td>{{ $transaksi->nama_peminjam }}</td>
                                 <td>{{ $transaksi->tanggal_kembali }} </td>
                                 <td>
                                     @if ($transaksi->keterangan == "sedang_dipinjam")
                                         <label class="text-warning"><i class="fa fa-clock-o"></i>&nbsp; Sedang Dipinjam</label>
+                                    @elseif ($transaksi->keterangan == "belum_tuntas")
+                                        <label class="text-info"><i class="fa fa-warning"></i>&nbsp; Belum Tuntas</label>
                                     @else
                                         <label class="text-success"><i class="fa fa-check-circle"></i>&nbsp; Sudah Dikembalikan</label>
                                     @endif
@@ -75,11 +83,34 @@
                                 <td>
                                     <form action="{{ route('barang.peminjaman.update',[$transaksi->id]) }}" method="POST">
                                         {{ csrf_field() }} {{ method_field('PATCH') }}
-                                        <select name="keterangan" id="" {{ $transaksi->keterangan == "sudah_dikembalikan" ? 'disabled' : '' }}>
-                                            <option value="sudah_dikembalikan">Sudah Dikembalikan</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="">Status Pengembalian</label>
+                                            <select name="keterangan"  class="form-control" id="keterangan" {{ $transaksi->keterangan == "sudah_dikembalikan" ? 'disabled' : '' }}>
+                                                <option disabled selected>-- pilih keterangan -- </option>
+                                                <option value="belum_tuntas">Belum Tuntas</option>
+                                                <option value="sudah_dikembalikan">Sudah Dikembalikan</option>
+                                            </select>
+                                        </div>
+                                        <div style="display: none" id="form-keterangan">
+                                            <div class="form-group" >
+                                                <label for="">Jumlah Baik</label>
+                                                <input type="text" name="kondisi_pengembalian_baik" id="">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label for="">Jumlah Hilang</label>
+                                                <input type="text" name="kondisi_pengembalian_hilang" id="">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label for="">Jumlah Rusak</label>
+                                                <input type="text" name="kondisi_pengembalian_rusak" id="">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label for="">Keterangan Pengembalian</label>
+                                                <textarea name="keterangan_pengembalian" class="form-control" id="keterangan_pengembalian" cols="30" rows="2"></textarea>
+                                            </div>
+                                        </div>
                                         <br>
-                                        <button class="btn btn-success btn-sm" {{ $transaksi->keterangan == "sudah_dikembalikan" ? 'disabled' : '' }}><i class="fa fa-spinner fa-spin"></i>&nbsp; Proses</button>
+                                        <button class="btn btn-success btn-sm" {{ $transaksi->keterangan == "sudah_dikembalikan" ? 'disabled' : '' }}><i class="fa fa-check-circle"></i>&nbsp; Update</button>
                                     </form>
                                 </td>
                             </tr>
@@ -98,30 +129,22 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.colVis.min.js"></script>
 <script>
     $(document).ready(function() {
         var table = $('#kelas').DataTable( {
-            buttons: [ 'excel', 'pdf' ],
-            dom:
-            "<'row'<'col-md-3'l><'col-md-5'B><'col-md-4'f>>" +
-            "<'row'<'col-md-12'tr>>" +
-            "<'row'<'col-md-5'i><'col-md-7'p>>",
-            lengthMenu:[
-                [10,25,50,100,-1],
-                [10,25,50,100,"All"]
-            ]
-        } );
 
-        table.buttons().container()
-            .appendTo( '#kelas_wrapper .col-md-5:eq(0)' );
+        } );
+    } );
+
+    $(document).ready(function() {
+        $('#keterangan').change(function() {
+            var keterangan = $('#keterangan').val();
+            if (keterangan == "belum_tuntas") {
+                $('#form-keterangan').show();
+            }else{
+                $('#form-keterangan').hide();
+            }
+        })
     } );
     </script>
 @endpush

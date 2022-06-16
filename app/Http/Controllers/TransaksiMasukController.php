@@ -16,7 +16,7 @@ class TransaksiMasukController extends Controller
     }
 
     public function index(){
-        $transaksis = TransaksiMasuk::select('id','nama_barang','kode_barang','tahun_anggaran','sumber_dana','satuan','jumlah_barang')
+        $transaksis = TransaksiMasuk::select('id','nama_barang','kode_barang','jumlah_baik','tanggal_masuk','jumlah_hilang','jumlah_rusak','tahun_anggaran','sumber_dana','satuan')
                             ->orderBy('id','desc')
                             ->get();
         return view('operator/transaksi_masuk/index',compact('transaksis'));
@@ -31,26 +31,26 @@ class TransaksiMasukController extends Controller
         $this->validate($request,[
             'merk'  =>  'required',
             'kategori'  =>  'required',
-            'jumlah_barang' =>  'required',
             'satuan'    =>  'required',
             'merk'  =>  'required',
             'sumber_dana'   =>  'required',
-            'kondisi'   =>  'required',
         ]);
-        $date = Carbon::now();
-        $kode_barang =  Str::slug($date->toDateTimeString()).'-'.md5($date);
+        $jumlah = count(Barang::all());
+        $jumlah2 = $jumlah+1;
+        $kode_barang =  date('Y-m-d').'-'.'AST'.'-'.$jumlah2;
         $barang = new TransaksiMasuk;
         $barang->kode_barang = $kode_barang;
         $barang->nama_barang = $request->nama_barang;
         $barang->merk = $request->merk;
         $barang->kategori = $request->kategori;
-        $barang->jumlah_barang = $request->jumlah_barang;
+        $barang->jumlah_baik = $request->jumlah_baik;
+        $barang->jumlah_hilang = $request->jumlah_hilang;
+        $barang->jumlah_rusak = $request->jumlah_rusak;
         $barang->satuan = $request->satuan;
         $barang->merk = $request->merk;
         $barang->tahun_anggaran = $request->tahun_anggaran;
         $barang->tanggal_masuk = $request->tanggal_masuk;
         $barang->sumber_dana = $request->sumber_dana;
-        $barang->kondisi = $request->kondisi;
         $barang->save();
 
         $barang = new Barang;
@@ -58,12 +58,13 @@ class TransaksiMasukController extends Controller
         $barang->nama_barang = $request->nama_barang;
         $barang->merk = $request->merk;
         $barang->kategori = $request->kategori;
-        $barang->jumlah_barang = $request->jumlah_barang;
+        $barang->jumlah_baik = $request->jumlah_baik;
+        $barang->jumlah_hilang = $request->jumlah_hilang;
+        $barang->jumlah_rusak = $request->jumlah_rusak;
         $barang->satuan = $request->satuan;
         $barang->merk = $request->merk;
         $barang->tahun_anggaran = $request->tahun_anggaran;
         $barang->sumber_dana = $request->sumber_dana;
-        $barang->kondisi = $request->kondisi;
         $barang->save();
 
         return redirect()->route('barang.transaksi_masuk')->with(['success' => 'Data transaksi masuk sudah ditambahkan !']);
@@ -79,12 +80,10 @@ class TransaksiMasukController extends Controller
             'nama_barang'   =>  'required',
             'merk'  =>  'required',
             'kategori'  =>  'required',
-            'jumlah_barang' =>  'required',
             'satuan'    =>  'required',
             'merk'  =>  'required',
             'tahun_anggaran'    =>  'required',
             'sumber_dana'   =>  'required',
-            'kondisi'   =>  'required',
         ]);
 
         $transaksi = TransaksiMasuk::where('id',$id)->first();
@@ -92,25 +91,28 @@ class TransaksiMasukController extends Controller
             'nama_barang'   =>  $request->nama_barang,
             'merk'  =>  $request->merk,
             'kategori'  =>  $request->kategori,
+            'jumlah_baik' =>  $request->jumlah_baik,
+            'jumlah_hilang' =>  $request->jumlah_hilang,
+            'jumlah_rusak' =>  $request->jumlah_rusak,
             'jumlah_barang' =>  $request->jumlah_barang,
             'satuan'    =>  $request->satuan,
             'merk'  =>  $request->merk,
             'tahun_anggaran'    =>  $request->tahun_anggaran,
             'tanggal_masuk'    =>  $request->tanggal_masuk,
             'sumber_dana'   =>  $request->sumber_dana,
-            'kondisi'   =>  $request->kondisi,
         ]);
 
         Barang::where('kode_barang',$transaksi->kode_barang)->update([
             'nama_barang'   =>  $request->nama_barang,
             'merk'  =>  $request->merk,
             'kategori'  =>  $request->kategori,
-            'jumlah_barang' =>  $request->jumlah_barang,
+            'jumlah_baik' =>  $request->jumlah_baik,
+            'jumlah_hilang' =>  $request->jumlah_hilang,
+            'jumlah_rusak' =>  $request->jumlah_rusak,
             'satuan'    =>  $request->satuan,
             'merk'  =>  $request->merk,
             'tahun_anggaran'    =>  $request->tahun_anggaran,
             'sumber_dana'   =>  $request->sumber_dana,
-            'kondisi'   =>  $request->kondisi,
         ]);
 
         return redirect()->route('barang.transaksi_masuk')->with(['success' => 'Data Transaksi Masuk berhasil diubah !']);

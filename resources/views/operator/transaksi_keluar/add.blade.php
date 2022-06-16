@@ -106,6 +106,16 @@
                                 </div>
                             </div>
 
+                            <div class="form-group col-md-12">
+                                <label for="exampleInputEmail1">Nama Penanggung Jawab</label>
+                                <input type="text" name="penanggung_jawab" class="form-control" id="">
+                                <div>
+                                    @if ($errors->has('penanggung_jawab'))
+                                        <small class="form-text text-danger">{{ $errors->first('penanggung_jawab') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="col-md-12 text-center">
                                 <button type="reset" name="reset" class="btn btn-warning btn-sm"><i class="fa fa-refresh"></i>&nbsp; Ulangi</button>
                                 <button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Simpan</button>

@@ -65,7 +65,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group col-md-6">
+                            {{-- <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Jumlah Barang</label>
                                 <input type="text" name="jumlah_barang" class="form-control">
                                 <div>
@@ -73,7 +73,7 @@
                                         <small class="form-text text-danger">{{ $errors->first('jumlah_barang') }}</small>
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1">Satuan</label>
                                 <select name="satuan" class="form-control" id="bulan">
@@ -111,21 +111,36 @@
                                     @endif
                                 </div>
                             </div>
-
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1">Kondisi Barang</label>
-                                <select name="kondisi" class="form-control" id="kondisi">
-                                    <option disabled selected>-- pilih kondisi barang --</option>
-                                    <option value="baik">Baik</option>
-                                    <option value="rusak"> Rusak</option>
-                                    <option value="hilang"> Hilang</option>
-                                </select>
+                                <label for="exampleInputEmail1">Jumlah Barang Kondisi Baik</label>
+                                <input type="text" name="jumlah_baik" class="form-control">
                                 <div>
-                                    @if ($errors->has('kondisi'))
-                                        <small class="form-text text-danger">{{ $errors->first('kondisi') }}</small>
+                                    @if ($errors->has('jumlah_baik'))
+                                        <small class="form-text text-danger">{{ $errors->first('jumlah_baik') }}</small>
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">Jumlah Barang Kondisi Hilang</label>
+                                <input type="text" name="jumlah_hilang" class="form-control">
+                                <div>
+                                    @if ($errors->has('jumlah_hilang'))
+                                        <small class="form-text text-danger">{{ $errors->first('jumlah_hilang') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1">Jumlah Barang Kondisi Rusak</label>
+                                <input type="text" name="jumlah_rusak" class="form-control">
+                                <div>
+                                    @if ($errors->has('jumlah_rusak'))
+                                        <small class="form-text text-danger">{{ $errors->first('jumlah_rusak') }}</small>
+                                    @endif
+                                </div>
+                            </div>
+
 
                             <div class="col-md-12 text-center">
                                 <button type="reset" name="reset" class="btn btn-warning btn-sm"><i class="fa fa-refresh"></i>&nbsp; Ulangi</button>

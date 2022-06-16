@@ -46,12 +46,14 @@
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Merk</th>
-                                <th>Kategori</th>
-                                <th>Jumlah Barang</th>
+                                <th>Jumlah Baik</th>
+                                <th>Jumlah Hilang</th>
+                                <th>Jumlah Rusak</th>
                                 <th>Satuan</th>
+                                <th>Kategori</th>
+                                {{-- <th>Jumlah Barang</th> --}}
                                 <th>Tahun Anggaran</th>
                                 <th>Sumber Dana</th>
-                                <th>Kondisi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,33 +84,26 @@
                                 <td>{{ $barang->nama_barang }}</td>
                                 <td>{{ $barang->merk }}</td>
                                 <td>
+                                    <b>{{ $barang->jumlah_baik - $minus }} {{ $barang->satuan }}</b><br>
+                                    <label class="text-warning">Catatan : <br> {{ $jumlah_pinjam }} sedang dipinjam</label>
+                                </td>
+                                <td>{{ $barang->jumlah_hilang }}</td>
+                                <td>{{ $barang->jumlah_rusak }}</td>
+                                <td>{{ $barang->satuan }}</td>
+                                <td>
                                     @if ($barang->kategori == "aset")
                                         Kategori Aset
                                     @else
                                         Kategori Barang Habis Pakai
                                     @endif
                                 </td>
-                                <td>
-                                    {{ $barang->jumlah_barang - $minus }}
-                                </td>
-                                <td>{{ $barang->satuan }}</td>
+
                                 <td>{{ $barang->tahun_anggaran }}</td>
                                 <td>
                                     @if ($barang->sumber_dana == "apbn")
                                         Anggaran Pendapatan dan Belanja Negara (APBN)
                                     @else
                                         Penerima Negara Bukan Pajak (PNBP)
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($barang->kondisi == "baik")
-                                        <label class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Kondisi Baik</label>
-                                    @elseif ($barang->kondisi == "rusak")
-                                        <label class="text-warning"><i class="fa fa-warning"></i>&nbsp;Sudah Rusak</label>
-                                    @elseif ($barang->kondisi == "hilang")
-                                        <label class="text-danger"><i class="fa fa-close"></i>&nbsp;Hilang</label>
-                                    @else
-                                        <label class="text-info"><i class="fa fa-info-circle"></i>&nbsp;Sedang Dipinjam</label>
                                     @endif
                                 </td>
                             </tr>

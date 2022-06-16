@@ -55,17 +55,19 @@
                     </form>
                     <div class="row" style="margin-top:10px !important;">
                         <div class="col-md-12">
-                            <table class="table table-bordered table-hover" id="kelas" style="margin-top:10px !important;">
+                            <table class="table table-bordered table-hover" id="kelas">
                                 <thead class="bg-primary">
                                     <tr>
                                         <th>No</th>
                                         <th>Kode Barang</th>
                                         <th>Nama Barang</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Tahun Anggaran</th>
-                                        <th>Jumlah Masuk</th>
+                                        <th>Jumlah Baik</th>
+                                        <th>Jumlah Rusak</th>
+                                        <th>Jumlah Hilang</th>
                                         <th>Satuan</th>
                                         <th>Sumber Dana</th>
+                                        <th>Tahun Anggaran</th>
+                                        <th>Tanggal Masuk</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,17 +79,13 @@
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $transaksi->kode_barang }}</td>
                                         <td>{{ $transaksi->nama_barang }}</td>
+                                        <td>{{ $transaksi->jumlah_baik }}</td>
+                                        <td>{{ $transaksi->jumlah_rusak }}</td>
+                                        <td>{{ $transaksi->jumlah_hilang }}</td>
+                                        <td>{{ $transaksi->satuan }}</td>
                                         <td>{{ $transaksi->sumber_dana }}</td>
                                         <td>{{ $transaksi->tahun_anggaran }}</td>
-                                        <td>{{ $transaksi->jumlah_barang }}</td>
-                                        <td>{{ $transaksi->satuan }}</td>
-                                        <td>
-                                            @if ($transaksi->sumber_dana == "apbn")
-                                                Anggaran Pendapatan dan Belanja Negara (APBN)
-                                            @else
-                                                Penerima Negara Bukan Pajak (PNBP)
-                                            @endif
-                                        </td>
+                                        <td>{{ $transaksi->tanggal_masuk }}</td>
                                     </tr>
                                     @empty
                                         <tr>

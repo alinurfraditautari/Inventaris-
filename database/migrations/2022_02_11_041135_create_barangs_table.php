@@ -19,11 +19,12 @@ class CreateBarangsTable extends Migration
             $table->string('nama_barang');
             $table->string('merk');
             $table->enum('kategori',['aset','barang_habis_pakai']);
-            $table->integer('jumlah_barang');
+            $table->integer('jumlah_baik');
+            $table->integer('jumlah_hilang');
+            $table->integer('jumlah_rusak');
             $table->enum('satuan',['Unit','Pcs','Lembar']);
             $table->string('tahun_anggaran');
             $table->enum('sumber_dana',['apbn','pnpb']);
-            $table->enum('kondisi',['baik','rusak','sedang_dipinjam','hilang']);
             $table->timestamps();
         });
     }

@@ -24,7 +24,6 @@ class CreateTransaksiMasuksTable extends Migration
             $table->enum('satuan',['Unit','Pcs','Lembar']);
             $table->string('tahun_anggaran');
             $table->enum('sumber_dana',['apbn','pnpb']);
-            $table->enum('kondisi',['baik','rusak','sedang_dipinjam','hilang']);
             $table->timestamps();
         });
     }

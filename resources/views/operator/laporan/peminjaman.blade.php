@@ -64,9 +64,13 @@
                                         <th>Kode Barang</th>
                                         <th>Nama Barang</th>
                                         <th>Jumlah Pinjam</th>
+                                        <th>Jumlah Kembali</th>
+                                        <th>Jumlah Rusak</th>
+                                        <th>Jumlah Hilang</th>
                                         <th>Nama Peminjam</th>
                                         <th>Tanggal Kembali</th>
                                         <th>Keterangan</th>
+                                        <th>Keterangan Pengembalian</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,16 +83,22 @@
                                         <td>{{ $transaksi->tanggal_pinjam }}</td>
                                         <td>{{ $transaksi->kode_barang }}</td>
                                         <td>{{ $transaksi->nama_barang }}</td>
-                                        <td>{{ $transaksi->jumlah_pinjam }}</td>
+                                        <td>{{ $transaksi->jumlah_pinjam }} {{ $transaksi->satuan }}</td>
+                                        <td>{{ $transaksi->kondisi_pengembalian_baik }} {{ $transaksi->satuan }}</td>
+                                        <td>{{ $transaksi->kondisi_pengembalian_rusak }} {{ $transaksi->satuan }}</td>
+                                        <td>{{ $transaksi->kondisi_pengembalian_hilang }} {{ $transaksi->satuan }}</td>
                                         <td>{{ $transaksi->nama_peminjam }}</td>
                                         <td>{{ $transaksi->tanggal_kembali }} </td>
                                         <td>
                                             @if ($transaksi->keterangan == "sedang_dipinjam")
                                                 <label class="text-warning"><i class="fa fa-clock-o"></i>&nbsp; Sedang Dipinjam</label>
+                                            @elseif ($transaksi->keterangan == "belum_tuntas")
+                                                <label class="text-info"><i class="fa fa-warning"></i>&nbsp; Belum Tuntas</label>
                                             @else
                                                 <label class="text-success"><i class="fa fa-check-circle"></i>&nbsp; Sudah Dikembalikan</label>
                                             @endif
                                         </td>
+                                        <td>{{ $transaksi->keterangan_pengembalian }} </td>
                                     </tr>
                                     @empty
                                         <tr>

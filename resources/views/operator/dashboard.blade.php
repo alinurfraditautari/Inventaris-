@@ -90,7 +90,7 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
                     <h6 class="text-center text-bold">Grafik Jumlah Barang</h6>
-                        @section('chart_data')
+                        {{-- @section('chart_data')
                         chart.data = [
                             @foreach ($grafik as $data)
                                 {
@@ -99,7 +99,7 @@
                                 },
                             @endforeach
                         ];
-                    @endsection
+                    @endsection --}}
                     <div id="chartdiv"></div>
                 </div>
             </div>

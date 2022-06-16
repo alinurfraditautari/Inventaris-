@@ -20,7 +20,7 @@ class CreatePeminjamenTable extends Migration
             $table->string('nama_peminjam');
             $table->date('tanggal_kembali');
             $table->date('tanggal_pinjam');
-            $table->enum('keterangan',['sedang_dipinjam','sudah_dikembalikan']);
+            $table->enum('keterangan',['sedang_dipinjam','belum_tuntas','sudah_dikembalikan']);
             $table->timestamps();
         });
     }

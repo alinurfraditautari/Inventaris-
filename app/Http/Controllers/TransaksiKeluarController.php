@@ -18,21 +18,21 @@ class TransaksiKeluarController extends Controller
 
     public function index(){
         $transaksis = TransaksiKeluar::join('barangs','barangs.id','transaksi_keluars.barang_id')
-                            ->select('transaksi_keluars.id','tujuan_keluar','tanggal_keluar','jumlah_keluar','nama_barang','kode_barang','tahun_anggaran','sumber_dana','satuan')
+                            ->select('transaksi_keluars.id','tujuan_keluar','tanggal_keluar','jumlah_keluar','nama_barang','kode_barang','tahun_anggaran','sumber_dana','satuan','penanggung_jawab')
                             ->orderBy('transaksi_keluars.id','desc')
                             ->get();
         return view('operator/transaksi_keluar/index',compact('transaksis'));
     }
 
     public function add(){
-        $barangs = Barang::all();
+        $barangs = Barang::where('kategori','barang_habis_pakai')->get();
         return view('operator/transaksi_keluar.add',compact('barangs'));
     }
 
     public function post(Request $request){
         $barang = Barang::where('id',$request->barang_id)->first();
-        $barang_tersedia = $barang->jumlah_barang - $request->jumlah_keluar;
-        if ($request->jumlah_keluar > $barang->jumlah_barang) {
+        // $barang_tersedia = $barang->jumlah_barang - $request->jumlah_keluar;
+        if ($request->jumlah_keluar > $barang->jumlah_baik) {
             return redirect()->back()->with(['error'    => 'Jumlah barang tidak mencukupi']);
         }
         $this->validate($request,[
@@ -51,10 +51,8 @@ class TransaksiKeluarController extends Controller
             $barang->tanggal_keluar = $request->tanggal_keluar;
             $barang->tujuan_keluar = $request->tujuan_keluar;
             $barang->jumlah_keluar = $request->jumlah_keluar;
+            $barang->penanggung_jawab = $request->penanggung_jawab;
             $barang->save();
-            // Barang::where('id',$request->barang_id)->update([
-            //     'jumlah_barang' => $barang_tersedia,
-            // ]);
 
             DB::commit();
             return redirect()->route('barang.transaksi_keluar')->with(['success' => 'Data transaksi masuk sudah ditambahkan !']);
@@ -88,6 +86,7 @@ class TransaksiKeluarController extends Controller
             'jumlah_keluar'  =>  $request->jumlah_keluar,
             'tujuan_keluar'  =>  $request->tujuan_keluar,
             'tanggal_keluar' =>  $request->tanggal_keluar,
+            'penanggung_jawab'  => $request->penanggung_jawab,
         ]);
 
         return redirect()->route('barang.transaksi_keluar')->with(['success' => 'Data Transaksi Keluar berhasil diubah !']);

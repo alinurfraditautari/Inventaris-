@@ -65,6 +65,7 @@
                                         <th>Jumlah Keluar</th>
                                         <th>Satuan</th>
                                         <th>Tujuan Keluar</th>
+                                        <th>Penanggung Jawab</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,6 +81,7 @@
                                         <td>{{ $transaksi->jumlah_keluar }}</td>
                                         <td>{{ $transaksi->satuan }}</td>
                                         <td>{{ $transaksi->tujuan_keluar }} </td>
+                                        <td>{{ $transaksi->penanggung_jawab }} </td>
                                     </tr>
                                     @empty
                                         <tr>

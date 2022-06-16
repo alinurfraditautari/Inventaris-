@@ -19,7 +19,7 @@ class PeminjamanController extends Controller
 
     public function index(){
         $transaksis = Peminjaman::join('barangs','barangs.id','peminjamen.barang_id')
-                            ->select('peminjamen.id','tanggal_pinjam','tanggal_kembali','kode_barang','nama_barang','jumlah_pinjam','nama_peminjam','keterangan')
+                            ->select('peminjamen.id','tanggal_pinjam','kondisi_pengembalian_rusak','kondisi_pengembalian_hilang','kondisi_pengembalian_baik','satuan','tanggal_kembali','kode_barang','nama_barang','jumlah_pinjam','nama_peminjam','keterangan')
                             ->orderBy('peminjamen.id','desc')
                             ->get();
         return view('operator/peminjaman/index',compact('transaksis'));
@@ -31,13 +31,13 @@ class PeminjamanController extends Controller
     }
 
     public function post(Request $request){
-        $barang = Barang::where('id',$request->barang_id)->select('id','jumlah_barang')->first();
+        $barang = Barang::where('id',$request->barang_id)->select('id','jumlah_baik')->first();
         $keluar = TransaksiKeluar::where('barang_id',$barang->id)->select(DB::raw('sum(jumlah_keluar) as jumlah_keluar'))->first();
         $peminjaman = Peminjaman::select(DB::raw('sum(jumlah_pinjam) as jumlah_pinjam'))
                                 ->where('barang_id',$barang->id)
                                 ->where('keterangan','sedang_dipinjam')
                                 ->first();
-        $tersedia = $barang->jumlah_barang - $keluar->jumlah_keluar - $peminjaman->jumlah_pinjam;
+        $tersedia = $barang->jumlah_baik - $keluar->jumlah_keluar - $peminjaman->jumlah_pinjam;
         if ($request->jumlah_pinjam > $tersedia) {
             return redirect()->back()->with(['error'    => 'Jumlah barang tidak mencukupi']);
         }
@@ -77,6 +77,10 @@ class PeminjamanController extends Controller
 
         Peminjaman::where('id',$id)->update([
             'keterangan'   =>  $request->keterangan,
+            'keterangan_pengembalian'   =>  $request->keterangan_pengembalian,
+            'kondisi_pengembalian_baik'   =>  $request->kondisi_pengembalian_baik,
+            'kondisi_pengembalian_rusak'   =>  $request->kondisi_pengembalian_rusak,
+            'kondisi_pengembalian_hilang'   =>  $request->kondisi_pengembalian_hilang,
         ]);
 
         return redirect()->route('barang.peminjaman')->with(['success' => 'Status Transaksi Peminjaman berhasil diubah !']);

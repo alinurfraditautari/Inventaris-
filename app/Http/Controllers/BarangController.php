@@ -24,9 +24,9 @@ class BarangController extends Controller
         $keluar = count(TransaksiKeluar::all());
         $peminjaman = count(Peminjaman::all());
 
-        // $grafik = Barang::select('nama_barang',DB::raw('sum(jumlah_barang) as jumlah'))
-        //                     ->groupBy('nama_barang')->get();
-        return view('operator/dashboard',compact('barang','masuk','keluar','peminjaman'));
+        $grafik = Barang::select('nama_barang',DB::raw('sum(jumlah_baik) as jumlah'))
+                            ->groupBy('nama_barang')->get();
+        return view('operator/dashboard',compact('barang','masuk','keluar','peminjaman','grafik'));
     }
 
     public function index(){

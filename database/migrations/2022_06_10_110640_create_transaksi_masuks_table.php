@@ -20,7 +20,9 @@ class CreateTransaksiMasuksTable extends Migration
             $table->date('tanggal_masuk');
             $table->string('merk');
             $table->enum('kategori',['aset','barang_habis_pakai']);
-            $table->integer('jumlah_barang');
+            $table->integer('jumlah_baik');
+            $table->integer('jumlah_rusak');
+            $table->integer('jumlah_hilang');
             $table->enum('satuan',['Unit','Pcs','Lembar']);
             $table->string('tahun_anggaran');
             $table->enum('sumber_dana',['apbn','pnpb']);
